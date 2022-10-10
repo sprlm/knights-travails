@@ -45,7 +45,10 @@ const knightMoves = (start, end) => {
     while(queue.length !== 0) {
       // check if destination has been reached
       if (queue[0].x === endX && queue[0].y === endY) {
-        console.log(queue[0].currentPath);
+        let finalPath = queue[0].currentPath;
+        console.log(`You made it in ${finalPath.length - 1} move(s)! Here's your path:`);
+
+        finalPath.forEach(move => console.log(move));
         return;
       }
 
@@ -62,4 +65,5 @@ const knightMoves = (start, end) => {
   }
 };
 
+knightMoves([3, 3], [4, 3]);
 knightMoves([0, 0], [7, 7]);
