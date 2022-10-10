@@ -1,4 +1,4 @@
-const squareFactory = (x, y) => {
+const squareFactory = (x, y, currentPath) => {
   let moves = getPossibleMoves();
 
   function isValidMove(x, y) {
@@ -21,7 +21,7 @@ const squareFactory = (x, y) => {
     return output;
   };
 
-  return { moves };
+  return { x, y, currentPath, moves };
 };
 
 function isValidMove(x, y) {
@@ -29,13 +29,37 @@ function isValidMove(x, y) {
 };
 
 const knightMoves = (start, end) => {
-  if (!isValidMove(...start) && !isValidMove(...end)) {
+  let startX = start[0];
+  let startY = start[1];
+  let endX = end[0];
+  let endY = end[1];
+
+  if (!isValidMove(startX, startY) || !isValidMove(endX, endY)) {
     console.log("Error: Please enter a valid position (0-7).")
   } else {
-    let currentSquare = squareFactory(...start);
+    // perform breadth first search
+    let currentSquare = squareFactory(startX, startY, [start]);
+    let newPath;
+    let queue = [currentSquare];
 
-    console.log(currentSquare.moves);
+    while(queue.length !== 0) {
+      // check if destination has been reached
+      if (queue[0].x === endX && queue[0].y === endY) {
+        console.log(queue[0].currentPath);
+        return;
+      }
+
+      // add all possible moves to queue
+      queue[0].moves.forEach(move => {
+        newPath = queue[0].currentPath.slice(0);
+        newPath.push(move);
+        queue.push(squareFactory(move[0], move[1], newPath));
+      });
+
+      // remove first element of queue
+      queue.shift();
+    }
   }
 };
 
-knightMoves([0,0],[3,3]);
+knightMoves([0, 0], [7, 7]);
