@@ -24,5 +24,18 @@ const squareFactory = (x, y) => {
   return { moves };
 };
 
-let square = squareFactory(3, 0);
-console.log(square.moves);
+function isValidMove(x, y) {
+  return x > -1 && x < 8 && y > -1 && y < 8;
+};
+
+const knightMoves = (start, end) => {
+  if (!isValidMove(...start) && !isValidMove(...end)) {
+    console.log("Error: Please enter a valid position (0-7).")
+  } else {
+    let currentSquare = squareFactory(...start);
+
+    console.log(currentSquare.moves);
+  }
+};
+
+knightMoves([0,0],[3,3]);
